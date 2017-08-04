@@ -16,7 +16,7 @@ class Vessel(protected var x: Int, protected var y: Int)
   def move(x: Int, y: Int): Unit = {
     checkOutOfBounds(x + this.x)
     checkOutOfBounds(y + this.y)
-    this.x = x
-    this.y = y
+    this.x += x
+    this.y += y
   }
 }
