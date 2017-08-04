@@ -15,11 +15,12 @@ class FleetSpec extends FlatSpec with Matchers
     val supportCount = fleet.getType((ship: Vessel) => ship.isInstanceOf[SupportVessel]).length
     val offenseCount = fleet.getType((ship: Vessel) => ship.isInstanceOf[OffensiveVessel]).length
     val pairedShips = fleet.pairOff()
+    val adjacentPairs = pairedShips.count(pair => this.isAdjacent(pair))
 
     supportCount should be (25)
     offenseCount should be (25)
     pairedShips.length should be (25)
-    pairedShips.count(pair => this.isAdjacent(pair)) should be (25)
+    adjacentPairs should be (25)
   }
 
   private def generateFleet(): Fleet =
