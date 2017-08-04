@@ -10,51 +10,37 @@ class FleetSpec extends FlatSpec with Matchers
 {
 
   "A Fleet" should "pair attack and support ships" in {
+
     val fleet = this.generateFleet()
     val supportCount = fleet.getType((ship: Vessel) => ship.isInstanceOf[SupportVessel]).length
     val offenseCount = fleet.getType((ship: Vessel) => ship.isInstanceOf[OffensiveVessel]).length
+    val pairedShips = fleet.pairOff()
 
     supportCount should be (25)
     offenseCount should be (25)
-
-    val pairedShips = fleet.pairOff()
-
     pairedShips.length should be (25)
-
     pairedShips.count(pair => this.isAdjacent(pair)) should be (25)
   }
 
   private def generateFleet(): Fleet =
   {
-    val offenceiveGenerator = Array[(Int, Int) => OffensiveVessel](
-      (x: Int,y: Int) => new Carrier(x,y),
-      (x: Int,y: Int) => new Destroyer(x,y),
-      (x: Int,y: Int) => new Destroyer(x,y)
-    )
-
-    val supportGenerator= Array[(Int, Int) => SupportVessel](
-      (x: Int,y: Int) => new RefuelingVessel(x,y),
-      (x: Int,y: Int) => new RepairVessel(x,y),
-      (x: Int,y: Int) => new SupportVessel(x,y)
-    )
-
     val shipRange = Array.range(1,26)
 
     val offence = shipRange.map(
       (rangeIndex: Int) => {
-        val index = this.randFromRange(0, offenceiveGenerator.length - 1)
+        val index = this.randFromRange(0, ShipGen.offenceiveGenerator.length - 1)
         val x = this.randFromRange(1, 100)
         val y = this.randFromRange(1, 100)
-        offenceiveGenerator(index)(x, y)
+        ShipGen.offenceiveGenerator(index)(x, y)
       }
     )
 
     val support = shipRange.map(
       (rangeIndex: Int) => {
-        val index = this.randFromRange(0, supportGenerator.length - 1)
+        val index = this.randFromRange(0, ShipGen.supportGenerator.length - 1)
         val x = this.randFromRange(1, 100)
         val y = this.randFromRange(1, 100)
-        supportGenerator(index)(x, y)
+        ShipGen.supportGenerator(index)(x, y)
       }
     )
 
@@ -80,4 +66,18 @@ class FleetSpec extends FlatSpec with Matchers
     true
   }
 
+}
+
+object ShipGen {
+  val offenceiveGenerator: Array[(Int, Int) => OffensiveVessel] = Array(
+    (x: Int,y: Int) => new Carrier(x,y),
+    (x: Int,y: Int) => new Destroyer(x,y),
+    (x: Int,y: Int) => new Destroyer(x,y)
+  )
+
+  val supportGenerator:  Array[(Int, Int) => SupportVessel] = Array(
+    (x: Int,y: Int) => new RefuelingVessel(x,y),
+    (x: Int,y: Int) => new RepairVessel(x,y),
+    (x: Int,y: Int) => new SupportVessel(x,y)
+  )
 }
