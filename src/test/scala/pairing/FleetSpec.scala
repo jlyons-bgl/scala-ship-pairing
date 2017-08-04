@@ -45,9 +45,9 @@ class FleetSpec extends FlatSpec with Matchers
   }
 
   private def getShipRange[T](gen: Array[(Int, Int) => T]) = {
-    val index = this.randFromRange(0, gen.length - 1)
-    val x = this.randFromRange(1, 100)
-    val y = this.randFromRange(1, 100)
+    val index = randFromRange(0, gen.length - 1)
+    val x = randFromRange(1, 100)
+    val y = randFromRange(1, 100)
     gen(index)(x, y)
   }
 
@@ -62,8 +62,8 @@ class FleetSpec extends FlatSpec with Matchers
   }
 
   private def isAdjacent(pair: Pair): Boolean = {
-    if (this.outOfRange(pair.supportVessel.getX, pair.offensiveVessel.getX)) return false
-    if (this.outOfRange(pair.supportVessel.getY, pair.offensiveVessel.getY)) return false
+    if (outOfRange(pair.supportVessel.getX, pair.offensiveVessel.getX)) return false
+    if (outOfRange(pair.supportVessel.getY, pair.offensiveVessel.getY)) return false
     true
   }
 
