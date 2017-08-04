@@ -1,7 +1,6 @@
 package pairing.vessel
 
-class Vessel(protected var x: Int, protected var y: Int)
-{
+class Vessel(protected var x: Int, protected var y: Int) {
 
   checkOutOfBounds(x)
   checkOutOfBounds(y)
