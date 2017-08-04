@@ -7,8 +7,8 @@ import vessel.Vessel
 class Fleet(private val ships: Array[Vessel]) {
 
   def moveAdjacent(support: SupportVessel, offense: OffensiveVessel): Pair = {
-    val xdiff = support.getX - offense.getX + 1
-    val ydiff = support.getY - offense.getY + 1
+    val xdiff = support.getX - offense.getX + (if (support.getX == 100) -1 else 1)
+    val ydiff = support.getY - offense.getY + (if (support.getY == 100) -1 else 1)
 
 
     offense.move(xdiff, ydiff)
@@ -30,4 +30,3 @@ class Fleet(private val ships: Array[Vessel]) {
 
 }
 
-class Pair(val supportVessel: SupportVessel, val offensiveVessel: OffensiveVessel)
