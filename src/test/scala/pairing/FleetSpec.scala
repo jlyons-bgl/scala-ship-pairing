@@ -9,17 +9,19 @@ import pairing.vessel.support.{RefuelingVessel, RepairVessel, SupportVessel}
 class FleetSpec extends FlatSpec with Matchers
 {
 
-  "A Fleet" should "pair attack and defence ships" in {
+  "A Fleet" should "pair attack and support ships" in {
     val fleet = this.generateFleet()
+    val supportCount = fleet.getType((ship: Vessel) => ship.isInstanceOf[SupportVessel]).length
+    val offenseCount = fleet.getType((ship: Vessel) => ship.isInstanceOf[OffensiveVessel]).length
 
-    fleet.getType((ship: Vessel) => ship.isInstanceOf[SupportVessel]).length should be 25
-    fleet.getType((ship: Vessel) => ship.isInstanceOf[OffensiveVessel]).length should be 25
+    supportCount should be (25)
+    offenseCount should be (25)
 
     val pairedShips = fleet.pairOff()
 
-    pairedShips.length should be 25
+    pairedShips.length should be (25)
 
-    pairedShips.count(pair => this.isAdjacent(pair)) should be 25
+    pairedShips.count(pair => this.isAdjacent(pair)) should be (25)
   }
 
   private def generateFleet(): Fleet =
@@ -68,14 +70,14 @@ class FleetSpec extends FlatSpec with Matchers
   {
     if (a > b+1 || a < b-1) return true
     if (a == b) return true
-    return false
+    false
   }
 
   private def isAdjacent(pair: Pair): Boolean =
   {
     if (this.outOfRange(pair.supportVessel.getX, pair.offensiveVessel.getX)) return false
     if (this.outOfRange(pair.supportVessel.getY, pair.offensiveVessel.getY)) return false
-    return true
+    true
   }
 
 }
